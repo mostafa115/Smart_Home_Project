@@ -1,0 +1,9 @@
+build/
+Debug/
+Release/
+*.o
+*.d
+*.elf
+*.hex
+*.map
+.settings/

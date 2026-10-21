@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build toolchain image
+        run: docker build -t smart-home-avr .
+
+      - name: Build firmware and run host unit tests
+        run: docker run --rm -v "$PWD:/src" smart-home-avr make all test
+
+      - name: Upload firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: smart_home-atmega128
+          path: |
+            build/smart_home.hex
+            build/smart_home.elf
